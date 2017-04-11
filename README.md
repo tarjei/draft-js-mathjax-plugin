@@ -2,7 +2,7 @@
 
 *This is a plugin for the `draft-js-plugins-editor`.*
 
-This plugin allows you to edit math rendered by mathjax.
+This plugin allows you to edit math rendered by mathjax. [Give it a try!](https://efloti.github.io/draft-js-mathjax-plugin/)
 
 It use the `$` key to insert inline math and `CTRL+M` for block one.
 
