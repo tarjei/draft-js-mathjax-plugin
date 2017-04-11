@@ -1,6 +1,7 @@
 const loadScript = require('load-script')
 
-const DEFAULT_SCRIPT = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js'
+// mathjax cdn shutdown the 30/04/2017!!! https://cdn.mathjax.org/mathjax/latest/MathJax.js
+const DEFAULT_SCRIPT = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js'
 
 const DEFAULT_OPTIONS = {
   extensions: ['tex2jax.js'],
