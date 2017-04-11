@@ -1,19 +1,68 @@
 # DraftJS MathJax Plugin
 
 *This is a plugin for the `draft-js-plugins-editor`.*
-This plugin allows you to edit math rendered by mathjax in the draft-js editor.
+
+This plugin allows you to edit math rendered by mathjax.
+
+It use the `$` key to insert inline math and `CTRL+M` for block one.
+
+![demo](https://github.com/efloti/draft-js-mathjax-plugin/raw/master/demo.gif)
+
+## Installation
+
+```
+npm install draft-js-mathjax-plugin --save
+```
 
 ## Usage
 
 ```js
-import createMathJaxPlugin from 'draft-js-mathjax-plugin';
+import React, { Component } from 'react'
+import Editor from 'draft-js-plugins-editor'
+import createMathjaxPlugin from 'draft-js-mathjax-plugin'
+// import other plugins, eg.:
+// import createLinkifyPlugin from 'draft-js-linkify-plugin'
+import { EditorState } from 'draft-js'
 
-const mathJaxPlugin = createMathJaxPlugin();
+const mathjaxPlugin = createMathjaxPlugin()
+//const linkifyPlugin = createLinkifyPlugin()
+
+const plugins = [
+  mathjaxPlugin,
+  // linkifyPlugin,
+]
+
+export default class MyEditor extends Component {
+
+  state = {
+    editorState: EditorState.createEmpty(),
+  }
+
+  onChange = (editorState) => {
+    this.setState({
+      editorState,
+    })
+  }
+
+  render() {
+    return (
+      <Editor
+        editorState={this.state.editorState}
+        onChange={this.onChange}
+        plugins={plugins}
+      />
+    )
+  }
+}
 ```
 
-## Key Bindings
+Learn more [draftjs-plugins](https://github.com/draft-js-plugins/draft-js-plugins)
 
-This plugin use the `$` key to insert inline math and `CTRL+M` for a block one.
+## Todo
+
+  - give the ability to configure the plugin (key binding, style, ...),
+  - improve help for tex editing (completion, snippet ...),
+  - ...
 
 ## License
 
