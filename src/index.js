@@ -1,4 +1,4 @@
-import { EditorState } from 'draft-js'
+import { EditorState, Modifier } from 'draft-js'
 import { myKeyBindingFn, findInlineTeXEntities } from './utils'
 import insertTeX from './modifiers/insertTeX'
 import InlineTeX from './components/InlineTeX'
@@ -22,6 +22,23 @@ const createMathjaxPlugin = (/* config */) => {
     const editorState = store.getEditorState()
     store.setEditorState(
       insertTeX(editorState, block),
+    )
+  }
+
+  const insertChar = (char) => {
+    const editorState = store.getEditorState()
+    const sel = editorState.getSelection()
+    const offset = sel.getStartOffset() - 1
+    const newContentState = Modifier.replaceText(
+      editorState.getCurrentContent(),
+      sel.merge({
+        anchorOffset: offset,
+        focusOffset: offset + 1,
+      }),
+      char,
+    )
+    store.setEditorState(
+      EditorState.push(editorState, newContentState, 'insert-characters'),
     )
   }
 
@@ -81,6 +98,11 @@ const createMathjaxPlugin = (/* config */) => {
       const blockKey = command.slice(18)
 
       updateTeX(blockKey, dir)
+      return 'handled'
+    }
+    if (command.slice(0, 11) === 'insert-char') {
+      const char = command.slice(12)
+      insertChar(char)
       return 'handled'
     }
     return 'not-handled'

@@ -4,7 +4,7 @@
 
 This plugin allows you to edit math rendered by mathjax. [Give it a try!](https://efloti.github.io/draft-js-mathjax-plugin/)
 
-It use the `$` key to insert inline math and `CTRL+M` for block one.
+It use the traditional `$` key to insert inline math and `CTRL+M` for block one. (Type `\$` to insert de `$` character)
 
 ![demo](https://github.com/efloti/draft-js-mathjax-plugin/raw/master/demo.gif)
 
