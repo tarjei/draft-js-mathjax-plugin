@@ -30,10 +30,13 @@ const loadMathJax = (
 ) => {
   if (window.MathJax) {
     window.MathJax.Hub.Config(options)
+    window.MathJax.Hub.processSectionDelay = 0
     return
   }
   loadScript(script, () => {
     window.MathJax.Hub.Config(options)
+    // avoid flickering of the preview
+    window.MathJax.Hub.processSectionDelay = 0
   })
 }
 

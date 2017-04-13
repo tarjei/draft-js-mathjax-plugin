@@ -5,6 +5,7 @@ let needsProcess = false
 function doProcess(MathJax) {
   MathJax.Hub.Queue(() => {
     const oldElementScripts = MathJax.Hub.elementScripts
+    // voir https://github.com/mathjax/MathJax/blob/master/unpacked/MathJax.js#L2445
     MathJax.Hub.elementScripts = (/* element */) => pendingScripts
 
     try {
