@@ -26,7 +26,7 @@ import { EditorState } from 'draft-js'
 
 const mathjaxConfig = {
   macros: {
-    bold: ['{\\bf #1'}', 1],
+    bold: ['{\\bf #1}', 1],
   },
 }
 
