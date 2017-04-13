@@ -5,9 +5,8 @@ import InlineTeX from './components/InlineTeX'
 import TeXBlock from './components/TeXBlock'
 import loadMathJax from './loadMathJax'
 
-
-const createMathjaxPlugin = (/* config */) => {
-  loadMathJax()
+const createMathjaxPlugin = ({ macros }/* config */) => {
+  loadMathJax({ macros })
 
   const store = {
     getEditorState: undefined,

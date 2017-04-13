@@ -4,7 +4,7 @@
 
 This plugin allows you to edit math rendered by mathjax. [Give it a try!](https://efloti.github.io/draft-js-mathjax-plugin/)
 
-It use the traditional `$` key to insert inline math and `CTRL+M` for block one. (Type `\$` to insert de `$` character)
+It uses the traditional `$` key to insert inline math and `CTRL+M` for block one. (Type `\$` to insert de `$` character)
 
 ![demo](https://github.com/efloti/draft-js-mathjax-plugin/raw/master/demo.gif)
 
@@ -24,7 +24,13 @@ import createMathjaxPlugin from 'draft-js-mathjax-plugin'
 // import createLinkifyPlugin from 'draft-js-linkify-plugin'
 import { EditorState } from 'draft-js'
 
-const mathjaxPlugin = createMathjaxPlugin()
+const mathjaxConfig = {
+  macros: {
+    bold: ['{\\bf #1'}', 1],
+  },
+}
+
+const mathjaxPlugin = createMathjaxPlugin(mathjaxConfig)
 //const linkifyPlugin = createLinkifyPlugin()
 
 const plugins = [
@@ -57,6 +63,12 @@ export default class MyEditor extends Component {
 ```
 
 Learn more [draftjs-plugins](https://github.com/draft-js-plugins/draft-js-plugins)
+
+## Optional configuration Object
+
+  - `macros`: an object to define mathjax macros
+  see the example above and [mathjax doc](http://docs.mathjax.org/en/latest/tex.html?highlight=macros#defining-tex-macros) 
+  - (...)
 
 ## Todo
 

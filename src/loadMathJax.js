@@ -24,17 +24,39 @@ const DEFAULT_OPTIONS = {
   // "HTML-CSS": { availableFonts: ["STIX","TeX"] }
 }
 
-const loadMathJax = (
-  script = DEFAULT_SCRIPT,
-  options = DEFAULT_OPTIONS,
-) => {
+const DEFAULT_CONFIG = {
+  script: DEFAULT_SCRIPT,
+  options: DEFAULT_OPTIONS,
+}
+
+const loadMathJax = ({ macros }) => {
+  let config = DEFAULT_CONFIG
+
+  if (macros) {
+    let TeX = DEFAULT_OPTIONS.TeX
+    TeX = {
+      ...TeX,
+      Macros: {
+        ...TeX.Macros,
+        ...macros,
+      },
+    }
+    config = {
+      ...config,
+      options: {
+        ...config.options,
+        TeX,
+      },
+    }
+  }
+
   if (window.MathJax) {
-    window.MathJax.Hub.Config(options)
+    window.MathJax.Hub.Config(config.options)
     window.MathJax.Hub.processSectionDelay = 0
     return
   }
-  loadScript(script, () => {
-    window.MathJax.Hub.Config(options)
+  loadScript(config.script, () => {
+    window.MathJax.Hub.Config(config.options)
     // avoid flickering of the preview
     window.MathJax.Hub.processSectionDelay = 0
   })
