@@ -23,7 +23,7 @@ export default class InlineTeX extends Component {
       })
     }
 
-    this.onChange = (newState) => {
+    this.onChange = (newState, cb = () => {}) => {
       // Ne serait-ce pas mieux (plus simple) que l'entité
       // porte l'état du composant (sauf editMode) ?
       // Nécessite une grosse reprise du code...
@@ -42,7 +42,7 @@ export default class InlineTeX extends Component {
       //   )
       // }))
 
-      this.setState(newState)
+      this.setState(newState, cb)
     }
 
     this.getCaretPos = () => {
@@ -57,6 +57,10 @@ export default class InlineTeX extends Component {
         const { teX, displaystyle } = this.state
         const { entityKey, children } = this.props
         const contentState = this.getCurrentEditorContent()
+        store.updateMostUsedTeXCmds(
+          teX,
+          contentState.getEntity(entityKey).getData().teX,
+        )
         finishEdit(store)(
           ...saveTeX({
             after,
@@ -116,14 +120,20 @@ export default class InlineTeX extends Component {
   render() {
     const { editMode, teX, displaystyle } = this.state
 
+    const store = this.props.getStore()
+    const mostUsedCommands = store.getMostUsedTeXCmds()
+    const teXCommands = store.teXCommandsAndMacros
+
     let input = null
     if (editMode) {
       input = (
         <TeXInput
           onChange={this.onChange}
           teX={teX}
-          finishEdit={this.save}
           displaystyle={displaystyle}
+          finishEdit={this.save}
+          mostUsedCommands={mostUsedCommands}
+          teXCommands={teXCommands}
           caretPosFn={this.getCaretPos}
           style={styles.edit}
         />

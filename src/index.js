@@ -1,11 +1,20 @@
 import { EditorState, Modifier } from 'draft-js'
-import { myKeyBindingFn, findInlineTeXEntities } from './utils'
+import {
+  myKeyBindingFn,
+  findInlineTeXEntities,
+  getInitialMostUsedTeXCmds,
+  updateMostUsedTeXCmds,
+  mergeMacros,
+} from './utils'
+import teXCommands from './teXCommands'
 import insertTeX from './modifiers/insertTeX'
 import InlineTeX from './components/InlineTeX'
 import TeXBlock from './components/TeXBlock'
 import loadMathJax from './loadMathJax'
 
-const createMathjaxPlugin = ({ macros }/* config */) => {
+const createMathjaxPlugin = (config = { macros: {} }/* config */) => {
+  const { macros } = config
+
   loadMathJax({ macros })
 
   const store = {
@@ -14,7 +23,17 @@ const createMathjaxPlugin = ({ macros }/* config */) => {
     getReadOnly: undefined,
     setReadOnly: undefined,
     getEditorRef: undefined,
+    updateMostUsedTeXCmds(teX, lastTex = '') {
+      this.mostUsedTeXCommands = updateMostUsedTeXCmds(
+        teX,
+        this.mostUsedTeXCommands,
+        lastTex,
+      )
+    },
+    getMostUsedTeXCmds() { return this.mostUsedTeXCommands },
     teXToUpdate: {},
+    mostUsedTeXCommands: {},
+    teXCommandsAndMacros: mergeMacros(teXCommands, macros),
   }
 
   const _insertTeX = (block = false) => {
@@ -114,6 +133,8 @@ const createMathjaxPlugin = ({ macros }/* config */) => {
       store.getReadOnly = getReadOnly
       store.setReadOnly = setReadOnly
       store.getEditorRef = getEditorRef
+      store.mostUsedTeXCommands =
+        getInitialMostUsedTeXCmds(getEditorState())
     },
     decorators: [{
       strategy: findInlineTeXEntities,
