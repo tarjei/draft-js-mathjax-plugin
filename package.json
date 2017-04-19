@@ -37,9 +37,7 @@
     "lint": "eslint 'src/*.js' 'src/**/*.js'; exit 0"
   },
   "license": "MIT",
-  "dependencies": {
-    "load-script": "^1.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-preset-es2015": "^6.18.0",

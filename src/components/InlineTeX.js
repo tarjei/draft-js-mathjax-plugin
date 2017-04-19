@@ -57,7 +57,7 @@ export default class InlineTeX extends Component {
         const { teX, displaystyle } = this.state
         const { entityKey, children } = this.props
         const contentState = this.getCurrentEditorContent()
-        store.updateMostUsedTeXCmds(
+        store.completion.updateMostUsedTeXCmds(
           teX,
           contentState.getEntity(entityKey).getData().teX,
         )
@@ -120,9 +120,7 @@ export default class InlineTeX extends Component {
   render() {
     const { editMode, teX, displaystyle } = this.state
 
-    const store = this.props.getStore()
-    const mostUsedCommands = store.getMostUsedTeXCmds()
-    const teXCommands = store.teXCommandsAndMacros
+    const completion = this.props.getStore().completion
 
     let input = null
     if (editMode) {
@@ -132,8 +130,7 @@ export default class InlineTeX extends Component {
           teX={teX}
           displaystyle={displaystyle}
           finishEdit={this.save}
-          mostUsedCommands={mostUsedCommands}
-          teXCommands={teXCommands}
+          completion={completion}
           caretPosFn={this.getCaretPos}
           style={styles.edit}
         />

@@ -32,7 +32,7 @@ export default class TeXBlock extends Component {
         const store = this.props.blockProps.getStore()
         const { teX } = this.state
         const { contentState, block } = this.props
-        store.updateMostUsedTeXCmds(
+        store.completion.updateMostUsedTeXCmds(
           teX,
           block.getData().teX,
         )
@@ -78,8 +78,7 @@ export default class TeXBlock extends Component {
     const { editMode, teX, displaystyle } = this.state
 
     const store = this.props.blockProps.getStore()
-    const mostUsedCommands = store.getMostUsedTeXCmds()
-    const teXCommands = store.teXCommandsAndMacros
+    const completion = store.completion
 
     let input = null
     if (editMode) {
@@ -90,8 +89,7 @@ export default class TeXBlock extends Component {
           teX={teX}
           displaystyle={displaystyle}
           finishEdit={this.save}
-          mostUsedCommands={mostUsedCommands}
-          teXCommands={teXCommands}
+          completion={completion}
           caretPosFn={this.getCaretPos}
           style={styles.edit}
         />

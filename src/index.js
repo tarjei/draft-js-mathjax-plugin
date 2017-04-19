@@ -2,20 +2,27 @@ import { EditorState, Modifier } from 'draft-js'
 import {
   myKeyBindingFn,
   findInlineTeXEntities,
-  getInitialMostUsedTeXCmds,
-  updateMostUsedTeXCmds,
-  mergeMacros,
 } from './utils'
-import teXCommands from './teXCommands'
+import loadMathJax from './mathjax/loadMathJax'
+import initCompletion from './mathjax/completion'
 import insertTeX from './modifiers/insertTeX'
 import InlineTeX from './components/InlineTeX'
 import TeXBlock from './components/TeXBlock'
-import loadMathJax from './loadMathJax'
 
-const createMathjaxPlugin = (config = { macros: {} }/* config */) => {
-  const { macros } = config
+const defaultConfig = {
+  macros: {},
+  completion: 'auto',
+}
 
-  loadMathJax({ macros })
+const createMathjaxPlugin = (config = {}) => {
+  const {
+    macros,
+    completion,
+    script,
+    mathjaxConfig,
+  } = Object.assign(defaultConfig, config)
+
+  loadMathJax({ macros, script, mathjaxConfig })
 
   const store = {
     getEditorState: undefined,
@@ -23,17 +30,8 @@ const createMathjaxPlugin = (config = { macros: {} }/* config */) => {
     getReadOnly: undefined,
     setReadOnly: undefined,
     getEditorRef: undefined,
-    updateMostUsedTeXCmds(teX, lastTex = '') {
-      this.mostUsedTeXCommands = updateMostUsedTeXCmds(
-        teX,
-        this.mostUsedTeXCommands,
-        lastTex,
-      )
-    },
-    getMostUsedTeXCmds() { return this.mostUsedTeXCommands },
+    completion: initCompletion(completion, macros),
     teXToUpdate: {},
-    mostUsedTeXCommands: {},
-    teXCommandsAndMacros: mergeMacros(teXCommands, macros),
   }
 
   const _insertTeX = (block = false) => {
@@ -133,8 +131,9 @@ const createMathjaxPlugin = (config = { macros: {} }/* config */) => {
       store.getReadOnly = getReadOnly
       store.setReadOnly = setReadOnly
       store.getEditorRef = getEditorRef
-      store.mostUsedTeXCommands =
-        getInitialMostUsedTeXCmds(getEditorState())
+      store.completion = store.completion(getEditorState())
+      // store.completion.mostUsedTeXCommands =
+      //   getInitialMostUsedTeXCmds(getEditorState())
     },
     decorators: [{
       strategy: findInlineTeXEntities,
