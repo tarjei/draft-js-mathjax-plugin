@@ -22,7 +22,7 @@ import { EditorState } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 import createMathjaxPlugin from 'draft-js-mathjax-plugin'
 
-const mathjaxPlugin = createMathjaxPlugin()
+const mathjaxPlugin = createMathjaxPlugin(/* optional configuration object */)
 
 const plugins = [
   mathjaxPlugin,
@@ -57,26 +57,40 @@ Learn more [draftjs-plugins](https://github.com/draft-js-plugins/draft-js-plugin
 ## Optional configuration Object
 
   - `macros`: an object to define mathjax macros. Example:
-  ̀```
+  
+ ```js
   const mathjaxConfig = {
     macros: {
       bold: ['{\\bf #1}', 1],
     },
   }
-  ```
-  see the example above and [mathjax doc](http://docs.mathjax.org/en/latest/tex.html?highlight=macros#defining-tex-macros) 
-  - `completion` (default: `'auto'`): `'none' | 'manual' | 'auto'`. 
-  If you choose `manual`, use `ctrl-<space>` to launch completion about
-   the current tex command (if any).
+ ```
+  
+  see [mathjax doc](http://docs.mathjax.org/en/latest/tex.html?highlight=macros#defining-tex-macros) to find out how to define macros.
+  - `completion` (default: `'auto'`): `'none' | 'manual' | 'auto'`.
+  
+  If you choose `manual`, use `ctrl-<space>` to launch completion about the current tex command (if any).
+  
   Use (`Shift`)`Tab` to see each possible completion in turn.
-  - `script` (default: ): url to load mathjax from the plugin
-  - `mathjaxConfig`: an object to config mathjax 
-
-## Todo
-
-  - give the ability to configure the plugin (key binding, style, ...),
-  - improve help for tex editing (completion, snippet ...),
-  - ...
+  - `script` (default: `'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js'`): 
+  
+  url to load mathjax from the plugin
+  - `mathjaxConfig`: see [mathjax configuration object](http://docs.mathjax.org/en/latest/options/index.html). The default is:
+  
+  ```js
+  {                                                        
+    jax: ['input/TeX', 'output/CommonHTML'],                                       
+    TeX: {                                                                         
+      extensions: ['autoload-all.js'],                                             
+    },                                                                             
+    messageStyles: 'none',                                                         
+    showProcessingMessages: false,                                                 
+    showMathMenu: false,                                                           
+    showMathMenuMSIE: false,                                                       
+    preview: 'none',                                                               
+    delayStartupTypeset: true,                                                     
+  }
+  ```
 
 ## License
 
