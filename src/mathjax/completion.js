@@ -145,6 +145,7 @@ export default (status, macros) => editorState => ({
     mergeMacros(teXCommands, macros) : undefined,
   mostUsedTeXCommands: (status !== 'none') ?
     getInitialMostUsedTeXCmds(editorState) : undefined,
+  getLastTeXCommand,
   updateMostUsedTeXCmds(teX, lastTex = '') {
     this.mostUsedTeXCommands = updateMostUsedTeXCmds(
       teX,
@@ -152,13 +153,11 @@ export default (status, macros) => editorState => ({
       lastTex,
     )
   },
-  getMostUsedTeXCmds() { return this.mostUsedTeXCommands },
-  getLastTeXCommand,
   computeCompletionList(prefix) {
     return computeCompletionList(
       prefix,
       this.teXCommandsAndMacros,
-      this.mostUsedCommands,
+      this.mostUsedTeXCommands,
     )
   },
 })

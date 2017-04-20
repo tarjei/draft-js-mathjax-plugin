@@ -3,7 +3,7 @@ import React from 'react'
 const _isAlpha = key => key.length === 1 &&
       /[a-z]/.test(key.toLowerCase())
 
-function indent({text, start, end}, unindent = false) {
+function indent({ text, start, end }, unindent = false) {
   const nl0 = text.slice(0, start).split('\n').length - 1
   const nl1 = nl0 + (text.slice(start, end).split('\n').length - 1)
   let nStart = start
@@ -30,7 +30,6 @@ function indent({text, start, end}, unindent = false) {
       return l
     })
     .join('\n')
-  console.log(nText)
   return { text: nText, start: nStart, end: nEnd }
 }
 
@@ -43,13 +42,11 @@ const closeDelim = {
 
 class TeXInput extends React.Component {
 
-
   constructor(props) {
     super(props)
     const {
       onChange,
       caretPosFn,
-      completion,
     } = props
 
     const pos = caretPosFn()
@@ -58,8 +55,6 @@ class TeXInput extends React.Component {
       end: pos,
     }
 
-    this.mostUsedCommands = completion.getMostUsedTeXCmds()
-    this.teXCommands = completion.teXCommandsAndMacros
     this.completionList = []
     this.index = 0
 
