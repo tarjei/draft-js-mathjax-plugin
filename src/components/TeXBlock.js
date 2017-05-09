@@ -111,7 +111,7 @@ export default class TeXBlock extends Component {
       >
         {input}
         <div
-          onClick={() => this._update()}
+          onMouseDown={() => this._update()}
           style={style}
         >
           {rendered}

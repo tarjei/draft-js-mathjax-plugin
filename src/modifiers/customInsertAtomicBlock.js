@@ -1,11 +1,11 @@
-import { Modifier, CharacterMetadata, genKey, EditorState, ContentBlock, BlockMapBuilder } from 'draft-js'
-import { List, Repeat } from 'immutable'
+import { Modifier, genKey, EditorState, ContentBlock, BlockMapBuilder } from 'draft-js'
+// import { List, Repeat } from 'immutable'
 import { isAtEndOfBlock, isAtEndOfContent, isCurrentBlockEmpty } from './utils'
 
 export default function customInsertAtomicBlock(
   editorState,
   data,
-  character = ' ',
+  // character = ' ',
 ) {
   const contentState = editorState.getCurrentContent()
   const selectionState = editorState.getSelection()
@@ -35,14 +35,14 @@ export default function customInsertAtomicBlock(
   )
 
   // const charData = CharacterMetadata.create({entity: entityKey})
-  const charData = CharacterMetadata.create()
+  // const charData = CharacterMetadata.create()
 
   const fragmentArray = [
     new ContentBlock({
       key: genKey(),
       type: 'atomic',
-      text: character,
-      characterList: List(Repeat(charData, character.length)),
+      // text: character,
+      // characterList: List(Repeat(charData, character.length)),
       data,
     }),
   ]
@@ -53,8 +53,8 @@ export default function customInsertAtomicBlock(
     fragmentArray.push(new ContentBlock({
       key: genKey(),
       type: 'unstyled',
-      text: '',
-      characterList: List(),
+      // text: '',
+      // characterList: List(),
     }))
   }
 
@@ -68,7 +68,7 @@ export default function customInsertAtomicBlock(
 
   const newContent = withAtomicBlock.merge({
     selectionBefore: selectionState,
-    selectionAfter: withAtomicBlock.getSelectionAfter().set('hasFocus', true),
+    selectionAfter: withAtomicBlock.getSelectionAfter().set('hasFocus', false),
   })
 
   return EditorState.push(editorState, newContent, 'insert-fragment')

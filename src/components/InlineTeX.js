@@ -16,7 +16,6 @@ export default class InlineTeX extends Component {
     this._update = (key) => {
       if (this.state.editMode) return
       const store = this.props.getStore()
-
       this.setState({ editMode: true }, () => {
         store.setReadOnly(true)
         if (key) { store.teXToUpdate = {} }
@@ -55,7 +54,7 @@ export default class InlineTeX extends Component {
       this.setState({ editMode: false }, () => {
         const store = this.props.getStore()
         const { teX, displaystyle } = this.state
-        const { entityKey, children } = this.props
+        const { entityKey, offsetKey, children } = this.props
         const contentState = this.getCurrentEditorContent()
         store.completion.updateMostUsedTeXCmds(
           teX,
@@ -68,10 +67,16 @@ export default class InlineTeX extends Component {
             teX,
             displaystyle,
             entityKey,
+            blockKey: offsetKey.split('-')[0],
             ...React.Children.map(children, c => ({
-              blockKey: c.props.blockKey,
               startPos: c.props.start,
             }))[0],
+            // ...React.Children.map(children, (c) => {
+            //   debugger
+            //   return {
+            //     startPos: c.props.start,
+            //   }
+            // })[0],
           }),
         )
       })
@@ -93,6 +98,10 @@ export default class InlineTeX extends Component {
     }
   }
 
+  // componentWillUnmount() {
+  //   console.log("unmount", this.props.entityKey);
+  // }
+
   componentWillReceiveProps(nextProps) {
     const { entityKey } = nextProps
     const store = nextProps.getStore()
@@ -100,7 +109,7 @@ export default class InlineTeX extends Component {
     if (key === entityKey) {
       this._update(key)
     }
-    if (this.props.entityKey === entityKey) return
+    if (this.props.entityKey === entityKey) { return }
     // un composant est «recyclé» !!!
     // arrive lorsqu'on insère une entité avant une entité de même
     // type dans un même block
@@ -143,7 +152,7 @@ export default class InlineTeX extends Component {
       (displaystyle ? '}' : '')
 
     const rendered = (
-      <MathJaxNode inline>
+      <MathJaxNode inline key={this.props.entityKey}>
         {texContent}
       </MathJaxNode>
     )
@@ -157,7 +166,7 @@ export default class InlineTeX extends Component {
       >
         {input}
         <span
-          onClick={() => this._update()}
+          onMouseDown={() => this._update()}
           style={style}
           contentEditable={false}
         >

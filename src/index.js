@@ -138,7 +138,9 @@ const createMathjaxPlugin = (config = {}) => {
     decorators: [{
       strategy: findInlineTeXEntities,
       component: InlineTeX,
-      props: { getStore: () => store },
+      props: {
+        getStore: () => store,
+      },
     }],
     keyBindingFn,
     handleKeyCommand,
